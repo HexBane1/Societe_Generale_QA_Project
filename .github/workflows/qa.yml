@@ -25,7 +25,7 @@ jobs:
 
       - name: Run API tests
         run: >
-          newman run api-tests/sg-qa-portfolio.postman_collection.json
+          newman run api-tests/SG_QA_Portfolio_API.postman_collection.json
           --environment api-tests/bnr-prod.postman_environment.json
           --reporters cli,junit
           --reporter-junit-export reports/newman-results.xml
