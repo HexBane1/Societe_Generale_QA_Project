@@ -1,0 +1,38 @@
+name: QA tests
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the repository code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run API tests
+        run: >
+          newman run api-tests/sg-qa-portfolio.postman_collection.json
+          --environment api-tests/bnr-prod.postman_environment.json
+          --reporters cli,junit
+          --reporter-junit-export reports/newman-results.xml
+
+      - name: Upload the test report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: newman-report
+          path: reports/newman-results.xml
