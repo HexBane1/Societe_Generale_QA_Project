@@ -56,7 +56,7 @@ I also use these test techniques:
 Because these are real production sites, each test run calls each endpoint only once, scheduled runs happen at most once a night, and UI tests don't crawl the site.
 
 ## 6. What environment do we need?
-- Postman and Newman (Node.js 20)
+- Postman and Newman (Node.js 22)
 - Java 17+, Maven and Chrome (headless in CI)
 - GitHub Actions on `ubuntu-latest`
 - Production sites only, because no test environment is available
