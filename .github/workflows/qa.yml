@@ -21,18 +21,19 @@ jobs:
           node-version: 22
 
       - name: Install Newman
-        run: npm install -g newman
+        run: npm install -g newman newman-reporter-htmlextra
 
       - name: Run API tests
         run: >
           newman run api-tests/SG_QA_Portfolio_API.postman_collection.json
           --environment api-tests/bnr-prod.postman_environment.json
-          --reporters cli,junit
+          --reporters cli,junit,htmlextra
           --reporter-junit-export reports/newman-results.xml
+          --reporter-htmlextra-export reports/newman-report.html
 
       - name: Upload the test report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: newman-report
-          path: reports/newman-results.xml
+          path: reports/
