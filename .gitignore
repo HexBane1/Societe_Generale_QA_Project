@@ -1,0 +1,8 @@
+# IntelliJ IDEA project settings
+.idea/
+
+# Maven build output (compiled code and test reports)
+ui-tests/target/
+
+# Newman reports, if you run the API tests locally with report export
+reports/
