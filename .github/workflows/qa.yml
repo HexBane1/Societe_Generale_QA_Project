@@ -37,3 +37,32 @@ jobs:
         with:
           name: newman-report
           path: reports/
+
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the repository code
+        uses: actions/checkout@v7
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+          cache-dependency-path: ui-tests/pom.xml
+
+      # Chrome is already installed on ubuntu-latest. The cookie banner does not appear in headless Chrome,
+      # so Chrome runs with a normal window on a 1920x1080 virtual screen (xvfb-run).
+      # UI 5 is expected to fail until the aria-label bug is fixed (see documentation/TEST_CASES.md).
+      - name: Run UI tests
+        working-directory: ui-tests
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" mvn --batch-mode test
+
+      - name: Upload the test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ui-test-reports
+          path: ui-tests/target/surefire-reports/
